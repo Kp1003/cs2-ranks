@@ -15,6 +15,7 @@ Ranks/.idea
 *.user
 *.cache
 *.editorconfig
+*.zip
 
 Ranks/Modules/ignore
 Ranks/Modules/ignore/

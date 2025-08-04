@@ -64,7 +64,7 @@ public class RanksFakeRank : BasePlugin
 
             if (filter.Count > 0)
             {
-                var msg = UserMessage.FromId(350);
+                var msg = UserMessage.FromPartialName("CCSUsrMsg_ServerRankRevealAll");
                 msg.Send(filter);
             }
         });

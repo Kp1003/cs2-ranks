@@ -24,10 +24,10 @@ namespace Ranks;
 [MinimumApiVersion(210)]
 public class Ranks : BasePlugin
 {
-    public override string ModuleAuthor => "thesamefabius";
+    public override string ModuleAuthor => "thesamefabius (FakeRank fix by kMagic)";
     public override string ModuleDescription => "Adds a rating system to the server";
     public override string ModuleName => "[Ranks] Core";
-    public override string ModuleVersion => "v2.0.5";
+    public override string ModuleVersion => "v2.0.5.5-fakerank-fix";
 
     public string DbConnectionString = string.Empty;
 

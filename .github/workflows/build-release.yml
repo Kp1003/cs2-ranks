@@ -1,0 +1,76 @@
+name: Build and Release
+
+on:
+  release:
+    types: [created]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+    
+    - name: Restore dependencies
+      run: |
+        cd Ranks
+        dotnet restore
+        
+    - name: Publish Ranks
+      run: |
+        cd Ranks
+        dotnet publish -c Release -o ../publish
+    
+    - name: Package release
+      run: |
+        mkdir -p release-package/Ranks
+        
+        # Copy main Ranks plugin
+        cp publish/Ranks.dll release-package/Ranks/
+        cp publish/Ranks.pdb release-package/Ranks/
+        cp publish/RanksApi.dll release-package/Ranks/
+        cp publish/RanksApi.pdb release-package/Ranks/
+        cp publish/MySqlConnector.dll release-package/Ranks/
+        cp publish/Dapper.dll release-package/Ranks/
+        
+        # Copy modules
+        mkdir -p release-package/Ranks/Modules
+        cp -r publish/Modules/* release-package/Ranks/Modules/
+        
+        # Copy config example if exists
+        if [ -f Ranks/ranks.json ]; then
+          cp Ranks/ranks.json release-package/Ranks/ranks_example.json
+        fi
+        
+        # Create README
+        cat > release-package/README.txt << 'EOF'
+# CS2-Ranks with FakeRank Fix
+
+Installation:
+1. Copy the Ranks folder to /addons/counterstrikesharp/plugins/
+2. Configure ranks.json in the Ranks folder
+3. Restart server
+
+This is a fork with FakeRank scoreboard display fixed.
+Original: https://github.com/partiusfabaa/cs2-ranks
+EOF
+        
+    - name: Create ZIP
+      run: |
+        cd release-package
+        zip -r ../cs2-ranks-fakerank-fix.zip *
+        
+    - name: Upload to Release
+      uses: softprops/action-gh-release@v1
+      if: github.event_name == 'release'
+      with:
+        files: cs2-ranks-fakerank-fix.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

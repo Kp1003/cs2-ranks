@@ -49,18 +49,19 @@ jobs:
           cp Ranks/ranks.json release-package/Ranks/ranks_example.json
         fi
         
-        # Create README
-        cat > release-package/README.txt << 'EOF'
-# CS2-Ranks with FakeRank Fix
-
-Installation:
-1. Copy the Ranks folder to /addons/counterstrikesharp/plugins/
-2. Configure ranks.json in the Ranks folder
-3. Restart server
-
-This is a fork with FakeRank scoreboard display fixed.
-Original: https://github.com/partiusfabaa/cs2-ranks
-EOF
+    - name: Create README
+      run: |
+        cat > release-package/README.txt << EOF
+        CS2-Ranks with FakeRank Fix
+        
+        Installation:
+        1. Copy the Ranks folder to /addons/counterstrikesharp/plugins/
+        2. Configure ranks.json in the Ranks folder
+        3. Restart server
+        
+        This is a fork with FakeRank scoreboard display fixed.
+        Original: https://github.com/partiusfabaa/cs2-ranks
+        EOF
         
     - name: Create ZIP
       run: |

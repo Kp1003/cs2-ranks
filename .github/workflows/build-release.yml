@@ -1,10 +1,3 @@
-name: Build and Release
-
-on:
-  release:
-    types: [created]
-  workflow_dispatch:
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -21,12 +14,17 @@ jobs:
     - name: Restore dependencies
       run: |
         cd Ranks
-        dotnet restore
+        dotnet restore Ranks.sln
         
-    - name: Publish Ranks
+    - name: Build Ranks solution
       run: |
         cd Ranks
-        dotnet publish -c Release -o ../publish
+        dotnet build Ranks.sln -c Release
+        
+    - name: Publish main Ranks project
+      run: |
+        cd Ranks/Ranks
+        dotnet publish -c Release -o ../../publish --no-build
     
     - name: Package release
       run: |

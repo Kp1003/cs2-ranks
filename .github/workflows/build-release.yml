@@ -45,9 +45,36 @@ jobs:
         cp publish/MySqlConnector.dll release-package/Ranks/
         cp publish/Dapper.dll release-package/Ranks/
         
-        # Copy modules
+        # Copy modules from their build folders
         mkdir -p release-package/Ranks/Modules
-        cp -r publish/Modules/* release-package/Ranks/Modules/
+        
+        # FakeRank
+        if [ -d "Ranks/Modules/Ranks_FakeRank/bin/Release/net8.0" ]; then
+          mkdir -p release-package/Ranks/Modules/Ranks_FakeRank
+          cp Ranks/Modules/Ranks_FakeRank/bin/Release/net8.0/*.dll release-package/Ranks/Modules/Ranks_FakeRank/ || true
+          cp Ranks/Modules/Ranks_FakeRank/bin/Release/net8.0/*.pdb release-package/Ranks/Modules/Ranks_FakeRank/ || true
+        fi
+        
+        # ExStats GeoIP
+        if [ -d "Ranks/Modules/Ranks_ExStats_GeoIP/bin/Release/net8.0" ]; then
+          mkdir -p release-package/Ranks/Modules/Ranks_ExStats_GeoIP
+          cp Ranks/Modules/Ranks_ExStats_GeoIP/bin/Release/net8.0/*.dll release-package/Ranks/Modules/Ranks_ExStats_GeoIP/ || true
+          cp Ranks/Modules/Ranks_ExStats_GeoIP/bin/Release/net8.0/*.pdb release-package/Ranks/Modules/Ranks_ExStats_GeoIP/ || true
+        fi
+        
+        # ExStats Hits
+        if [ -d "Ranks/Modules/Ranks_ExStats_Hits/bin/Release/net8.0" ]; then
+          mkdir -p release-package/Ranks/Modules/Ranks_ExStats_Hits
+          cp Ranks/Modules/Ranks_ExStats_Hits/bin/Release/net8.0/*.dll release-package/Ranks/Modules/Ranks_ExStats_Hits/ || true
+          cp Ranks/Modules/Ranks_ExStats_Hits/bin/Release/net8.0/*.pdb release-package/Ranks/Modules/Ranks_ExStats_Hits/ || true
+        fi
+        
+        # Tag
+        if [ -d "Ranks/Modules/Ranks_Tag/bin/Release/net8.0" ]; then
+          mkdir -p release-package/Ranks/Modules/Ranks_Tag
+          cp Ranks/Modules/Ranks_Tag/bin/Release/net8.0/*.dll release-package/Ranks/Modules/Ranks_Tag/ || true
+          cp Ranks/Modules/Ranks_Tag/bin/Release/net8.0/*.pdb release-package/Ranks/Modules/Ranks_Tag/ || true
+        fi
         
         # Copy config example if exists
         if [ -f Ranks/ranks.json ]; then

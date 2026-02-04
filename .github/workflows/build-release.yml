@@ -87,23 +87,33 @@ jobs:
         CS2-Ranks with FakeRank Fix
         
         Installation:
-        1. Copy the Ranks folder to /addons/counterstrikesharp/plugins/
-        2. Configure ranks.json in the Ranks folder
-        3. Restart server
+        1. Extract Ranks.zip to /addons/counterstrikesharp/plugins/
+        2. Extract Modules.zip to /addons/counterstrikesharp/plugins/Ranks/Modules/
+        3. Configure ranks.json in the Ranks folder
+        4. Restart server
         
         This is a fork with FakeRank scoreboard display fixed.
         Original: https://github.com/partiusfabaa/cs2-ranks
         EOF
         
-    - name: Create ZIP
+    - name: Create ZIPs
       run: |
-        cd release-package
-        zip -r ../cs2-ranks-fakerank-fix.zip *
+        # Create Ranks.zip (core plugin only)
+        cd release-package/Ranks
+        zip -r ../../Ranks.zip Ranks.dll Ranks.pdb RanksApi.dll RanksApi.pdb MySqlConnector.dll Dapper.dll ../README.txt
+        cd ../..
+        
+        # Create Modules.zip (all modules)
+        cd release-package/Ranks/Modules
+        zip -r ../../../Modules.zip *
+        cd ../../..
         
     - name: Upload to Release
       uses: softprops/action-gh-release@v1
       if: github.event_name == 'release'
       with:
-        files: cs2-ranks-fakerank-fix.zip
+        files: |
+          Ranks.zip
+          Modules.zip
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
